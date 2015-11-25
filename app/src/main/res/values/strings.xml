@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Meeting</string>
+    <string name="title_activity_add_meeting">AddMeetingActivity</string>
+    <string name="event_form_title_hint">title</string>
+    <string name="event_form_desc_hint">description</string>
+    <string name="event_form_date_begin_hint">date_begin</string>
+    <string name="event_form_date_end_hint">date_end</string>
+    <string name="event_form_cancel_hint">cancel</string>
+    <string name="event_form_ok_hint">ok</string>
+</resources>
