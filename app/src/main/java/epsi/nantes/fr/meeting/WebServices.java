@@ -2,7 +2,6 @@ package epsi.nantes.fr.meeting;
 
 import java.util.List;
 
-import epsi.nantes.fr.meeting.model.Hello;
 import epsi.nantes.fr.meeting.model.Login;
 import epsi.nantes.fr.meeting.model.MeetingWS;
 import epsi.nantes.fr.meeting.model.UserWS;
@@ -16,6 +15,9 @@ import retrofit.http.Path;
  * Created by Thibault on 29/10/2015.
  */
 public interface WebServices {
+
+    @POST("/meetings")
+    Call<Void> createMeeting(@Body MeetingWS meeting);
 
     @GET("/meetings")
     Call<List<MeetingWS>> listMeetings();
@@ -43,8 +45,5 @@ public interface WebServices {
 
     @POST("/login")
     Call<Void> login(@Body Login login);
-
-    @GET("/")
-    Call<Hello> hello();
 
 }

@@ -1,4 +1,4 @@
-package epsi.nantes.fr.meeting;
+package epsi.nantes.fr.meeting.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,14 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import epsi.nantes.fr.meeting.activities.AddMeetingActivity;
+import epsi.nantes.fr.meeting.R;
+import epsi.nantes.fr.meeting.UserForm;
 import epsi.nantes.fr.meeting.api.ApiClient;
 import epsi.nantes.fr.meeting.model.MeetingWS;
 import retrofit.Callback;
@@ -33,25 +32,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         SharedPreferences prefs = getSharedPreferences("epsiapp", Context.MODE_PRIVATE);
         if (prefs.getString("current_user_email", "").equals("")) {
             Intent form_user = new Intent(MainActivity.this, UserForm.class);
             startActivity(form_user);
         } else {
             if(prefs.getStringSet("cookies", new HashSet<String>()).isEmpty()) {
-                final ApiClient apiClient = new ApiClient(this);
+                ApiClient apiClient = new ApiClient(this);
                 apiClient.login(prefs.getString("current_user_email", ""), prefs.getString("current_user_password", "")).enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Response<Void> response, Retrofit retrofit) {
                         Log.d("login", response.raw().toString());
-
-
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
-
+                        Log.e("Cannot login", t.getMessage());
                     }
                 });
             }
@@ -68,7 +64,20 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list_view_meetings);
 
         meetings = new ArrayList<>();
+        SharedPreferences prefs = getSharedPreferences("epsiapp", Context.MODE_PRIVATE);
 
+        ApiClient apiClient = new ApiClient(this);
+        apiClient.listEvents().enqueue(new Callback<List<MeetingWS>>() {
+            @Override
+            public void onResponse(Response<List<MeetingWS>> response, Retrofit retrofit) {
+                Log.d("meetings", response.raw().toString());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override

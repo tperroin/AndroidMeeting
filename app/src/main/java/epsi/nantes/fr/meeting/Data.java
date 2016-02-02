@@ -2,6 +2,7 @@ package epsi.nantes.fr.meeting;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -114,10 +115,7 @@ public class Data {
 
         values.put("begin", dateFormat.format(meeting.getBegin()));
         values.put("end", dateFormat.format(meeting.getEnd()));
-        String author = String.valueOf(meeting.getAuthor());
-        if(author != null && !author.isEmpty()) {
-            values.put("author", dateFormat.format(meeting.getAuthor()));
-        }
+        values.put("author", String.valueOf(meeting.getAuthor()));
         long row = db.insert("Events", "null", values);
 
         Log.d("sql", "Meeting : inserted a line");
